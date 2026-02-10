@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philippine Micronational Currency Converter</title>
+
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+    
+    body {
+        height:100vh; display:flex; justify-content:center; align-items:center;
+        font-size:14px;
+        background: radial-gradient(circle at center, #001a2d 0%, #000510 70%, #000000 100%);
+        color:#9ffcff;
+        overflow:hidden;
+    }
+
+    /**************** VIVID GLASS CONVERTER ******************/
+    .converter-box {
+        width:380px; padding:30px; text-align:center;
+        background: rgba(0, 20, 30, 0.6);
+        border-radius:24px;
+        backdrop-filter: blur(20px);
+        border: 2px solid #00faff;
+        box-shadow: 0 0 30px rgba(0, 234, 255, 0.3), inset 0 0 20px rgba(0, 234, 255, 0.1);
+        transition: .4s ease-in-out;
+    }
+
+    .converter-box:hover {
+        box-shadow: 0 0 50px rgba(0, 250, 255, 0.5);
+        border-color: #ffffff;
+    }
+
+    h2 {
+        text-shadow: 0 0 15px #00faff;
+        margin-bottom: 5px;
+        color: #fff;
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    i { display: block; margin-bottom: 20px; color: #00faff; opacity: 0.8; font-size: 0.85rem; }
+
+    select, input {
+        width: 100%; padding: 12px; margin: 8px 0;
+        font-size: 14px; text-align: center;
+        border: 1px solid rgba(0, 250, 255, 0.3);
+        border-radius: 12px; color: #fff; outline: none;
+        background: rgba(0, 40, 60, 0.8);
+        box-shadow: inset 0 0 8px rgba(0, 234, 255, 0.2);
+        transition: .3s;
+    }
+
+    select:focus, input:focus {
+        border-color: #00faff;
+        box-shadow: 0 0 15px rgba(0, 250, 255, 0.4);
+        transform: scale(1.02);
+    }
+
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
+
+    button {
+        padding: 10px 18px; border-radius: 12px; border: none;
+        cursor: pointer; font-size: 12px; color: #001a2d; background: #00faff;
+        box-shadow: 0 0 15px #00faff; font-weight: bold;
+        transition: .3s; text-transform: uppercase;
+    }
+
+    button:hover { box-shadow: 0 0 25px #00faff; transform: translateY(-2px); background: #fff; }
+
+    .btn-secondary { background: transparent; color: #00faff; border: 1px solid #00faff; box-shadow: none; }
+
+    #result {
+        margin: 20px 0; font-size: 28px; font-weight: bold;
+        color: #fff; text-shadow: 0 0 15px #00faff;
+        opacity: 0; transition: .4s;
+    }
+
+    /**************** MODALS ******************/
+    .modal {
+        width: 350px; max-height: 80vh; overflow-y: auto;
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+        padding: 25px; border-radius: 20px;
+        background: rgba(0, 10, 20, 0.95); border: 2px solid #00faff;
+        backdrop-filter: blur(40px);
+        display: none; transition: .3s; text-align: center;
+        box-shadow: 0 0 50px rgba(0, 250, 255, 0.4);
+        z-index: 100;
+    }
+
+    .modal.show { display: block; transform: translate(-50%, -50%) scale(1); }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    td { padding: 10px; border-bottom: 1px solid rgba(0, 250, 255, 0.2); color: #9ffcff; }
+    
+    .close-btn { background: #ff0058; color: white; margin-top: 20px; box-shadow: 0 0 15px #ff0058; }
+
+    footer {
+        position: fixed; bottom: 15px; font-size: 12px;
+        color: #00faff; opacity: 0.6;
+    }
+</style>
+</head>
+<body>
+
+<div class="converter-box">
+    <h2>PHILIPPINE MICRONATIONAL CURRENCY CONVERTER</h2>
+    <i>Official Microcurrency Converter designed by the People's Republic of Aesthrella</i>
+
+    <select id="fromCur" onchange="convertNow()">
+        <option value="AET">AET (Aesthrellan Taresh)</option>
+        <option value="DHC">DHC (Dahlian Civilian)</option>
+        <option value="PHP">PHP (Philippine Peso)</option>
+        <option value="USD">USD (US Dollar)</option>
+        <option value="ESH">ESH (Eshwaran Seket)</option>
+        <option value="EDG">EDG (Eldorian Gran)</option>
+        <option value="TCD">TCD (Tarcisian Dollar)</option>
+        <option value="V$D">V$D (Vistoaquillan Dollar)</option>
+    </select>
+    
+    <select id="toCur" onchange="convertNow()">
+        <option value="PHP">PHP (Philippine Peso)</option>
+        <option value="AET">AET (Aesthrellan Taresh)</option>
+        <option value="DHC">DHC (Dahlian Civilian)</option>
+        <option value="USD">USD (US Dollar)</option>
+        <option value="ESH">ESH (Eshwaran Seket)</option>
+        <option value="EDG">EDG (Eldorian Gran)</option>
+        <option value="TCD">TCD (Tarcisian Dollar)</option>
+        <option value="V$D">V$D (Vistoaquillan Dollar)</option>
+    </select>
+
+    <input type="number" id="amount" placeholder="Enter Amount" oninput="convertNow()">
+
+    <div id="result">0.000</div>
+
+    <div class="btn-group">
+        <button onclick="swapCurrencies()">SWAP ↻</button>
+        <button onclick="openTable('rates')">EXCHANGE RATES</button>
+        <button class="btn-secondary" onclick="openTable('micro')">MICRONATIONS & CURRENCIES</button>
+    </div>
+</div>
+
+<div class="modal" id="infoModal">
+    <h3 id="modalTitle" style="color:#fff; text-shadow: 0 0 10px cyan;"></h3>
+    <div id="modalContent"></div>
+    <button class="close-btn" onclick="closeTable()">CLOSE TERMINAL</button>
+</div>
+
+<footer>PEOPLE'S REPUBLIC OF AESTHRELLA — 2026</footer>
+
+<script>
+/**************** RATE MAP *****************/
+const FX = {
+    AET: {PHP: 0.250, DHC: 0.500, USD: 0.004, ESH: 1.725, EDG: 0.357, TCD: 1.700, "V$D": 0.017},
+    DHC: {PHP: 0.500, AET: 0.613, USD: 0.009, ESH: 1.630, EDG: 0.714, TCD: 32.000, "V$D": 0.034},
+    PHP: {AET: 4.000, DHC: 2.000, USD: 0.017, ESH: 1.492, EDG: 1.428, TCD: 0.012, "V$D": 0.017},
+    USD: {PHP: 59.000, AET: 14.500, DHC: 29.000, ESH: 33.335, EDG: 83.333, TCD: 3.448, "V$D": 5.556},
+    ESH: {PHP: 0.670, AET: 0.579, DHC: 0.580, USD: 0.012, EDG: 0.958, TCD: 53.629, "V$D": 0.010},
+    EDG: {PHP: 0.700, AET: 2.800, DHC: 1.400, USD: 0.012, ESH: 1.044, TCD: 0.875, "V$D": 0.012},
+    TCD: {PHP: 80.000, AET: 320.000, DHC: 160.000, USD: 1.379, ESH: 53.629, EDG: 1.143, "V$D": 1.379},
+    "V$D": {PHP: 58.900, USD: 0.180, AET: 6.804, DHC: 3.402, ESH: 2.432, EDG: 1.530, TCD: 0.725}
+};
+
+const microData = {
+    "People's Republic of Aesthrella": "Aesthrellan Taresh (AET)",
+    "Democratic Federal Republic of Dahlia": "Dahlian Civilian (DHC)",
+    "Kingdom of Eshwaran": "Eshwaran Seket (ESH)",
+    "United Isles of Eldoria": "Eldorian Gran (EDG)",
+    "Archduchy of San Tarcisio": "Tarcisian Dollar (TCD)",
+    "Kingdom of Vistoaquilla": "Vistoaquillan Dollar (V$D)"
+};
+
+function convertNow() {
+    let a = parseFloat(document.getElementById('amount').value) || 0;
+    let f = document.getElementById('fromCur').value;
+    let t = document.getElementById('toCur').value;
+    let resDiv = document.getElementById('result');
+
+    resDiv.style.opacity = 0;
+    let val = (f === t) ? a : (a * (FX[f][t] || 0));
+    resDiv.innerHTML = val.toFixed(3) + " " + t;
+    setTimeout(() => resDiv.style.opacity = 1, 100);
+}
+
+function swapCurrencies() {
+    let f = document.getElementById('fromCur');
+    let t = document.getElementById('toCur');
+    let temp = f.value;
+    f.value = t.value;
+    t.value = temp;
+    convertNow();
+}
+
+function openTable(mode) {
+    let modal = document.getElementById('infoModal');
+    let title = document.getElementById('modalTitle');
+    let content = document.getElementById('modalContent');
+    let html = "<table>";
+
+    if (mode === 'rates') {
+        title.innerText = "EXCHANGE MATRIX";
+        Object.keys(FX).forEach(f => {
+            Object.keys(FX[f]).forEach(t => {
+                html += `<tr><td>1 ${f} = ${FX[f][t].toFixed(3)} ${t}</td></tr>`;
+            });
+            html += `<tr><td style="border:none; height:10px;"></td></tr>`;
+        });
+    } else {
+        title.innerText = "MICRONATIONS & CURRENCIES";
+        for (let nation in microData) {
+            html += `<tr><td><strong>${nation}</strong></td><td>${microData[nation]}</td></tr>`;
+        }
+    }
+
+    html += "</table>";
+    content.innerHTML = html;
+    modal.classList.add("show");
+}
+
+function closeTable() {
+    document.getElementById('infoModal').classList.remove("show");
+}
+</script>
+
+</body>
+</html>
