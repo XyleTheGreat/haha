@@ -1,3 +1,4 @@
+</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +51,7 @@
         text-transform: uppercase;
     }
 
-    i { display: block; margin-bottom: 25px; color: #00ff41; opacity: 0.7; font-size: 0.75rem; }
+    #sub-header { display: block; margin-bottom: 25px; color: #00ff41; opacity: 0.7; font-size: 0.75rem; }
 
     select, input {
         width: 100%; padding: 12px; margin: 10px 0;
@@ -98,7 +99,9 @@
     table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
     td { padding: 8px; border-bottom: 1px solid rgba(0, 255, 65, 0.2); color: #00ff41; }
     
-    .close-btn { border-color: #ff0000; color: #ff0000; text-shadow: 0 0 5px #ff0000; margin-top: 20px; }
+    .about-text { font-size: 13px; line-height: 1.6; color: #00ff41; text-align: justify; margin-top: 15px; }
+
+    .close-btn { border-color: #ff0000; color: #ff0000; text-shadow: 0 0 5px #ff0000; margin-top: 20px; width: 100%; }
     .close-btn:hover { background: rgba(255, 0, 0, 0.1); box-shadow: 0 0 15px #ff0000; }
 
     footer { position: fixed; bottom: 15px; font-size: 10px; color: #00ff41; opacity: 0.5; letter-spacing: 1px; }
@@ -109,8 +112,8 @@
 <canvas id="matrix"></canvas>
 
 <div class="converter-box">
-    <h2>THE PHILIPPINE MICRONATIONAL CURRENCY CONVERTER</h2>
-    <i>Official Exchange Terminal created by the People's Republic of Aesthrella</i>
+    <h2 id="main-title">THE PHILIPPINE MICRONATIONAL CURRENCY CONVERTER</h2>
+    <i id="sub-header">Official Exchange Terminal created by the People's Republic of Aesthrella</i>
 
     <select id="fromCur" onchange="convertNow()">
         <option value="AET">AET (Aesthrellan Taresh)</option>
@@ -141,23 +144,24 @@
     <div id="result">0.000</div>
 
     <div class="btn-group">
-        <button onclick="swapCurrencies()">SWAP_DIR</button>
-        <button onclick="openTable('rates')">EXCHANGE_MATRIX</button>
-        <button onclick="openTable('micro')">NATION_INDEX</button>
+        <button id="btn-swap" onclick="swapCurrencies()">SWAP_DIR</button>
+        <button id="btn-rates" onclick="openTable('rates')">EXCHANGE_MATRIX</button>
+        <button id="btn-index" onclick="openTable('micro')">NATION_INDEX</button>
+        <button id="btn-about" onclick="openTable('about')">ABOUT_SYSTEM</button>
+        <button id="btn-lang" onclick="toggleLanguage()">WIKA: EN/PH</button>
     </div>
 </div>
 
 <div class="modal" id="infoModal">
     <h3 id="modalTitle" style="color:#00ff41; text-shadow: 0 0 5px #00ff41;"></h3>
     <div id="modalContent"></div>
-    <button class="close-btn" onclick="closeTable()">TERMINATE_SESSION</button>
+    <button class="close-btn" id="btn-close" onclick="closeTable()">TERMINATE_SESSION</button>
 </div>
 
-<footer>PEOPLE'S REPUBLIC OF AESTHRELLA //  VER. 0.0.3</footer>
+<footer id="footer-text">PEOPLE'S REPUBLIC OF AESTHRELLA // VER. 0.0.3</footer>
 
 <script>
-/**************** RATE MAP (Including AKR) *****************/
-// Base logic: 1 AET = 2 AKR | 1 AKR = 0.5 AET
+/**************** RATE MAP *****************/
 const FX = {
     AET: {AKR: 2.000, PHP: 0.250, DHC: 0.500, USD: 0.004, ESH: 1.725, EDG: 0.357, TCD: 1.700, "V$D": 0.017},
     AKR: {AET: 0.500, PHP: 0.125, DHC: 0.250, USD: 0.002, ESH: 0.862, EDG: 0.178, TCD: 0.850, "V$D": 0.008},
@@ -179,6 +183,50 @@ const microData = {
     "Archduchy of San Tarcisio": "Tarcisian Dollar (TCD)",
     "Kingdom of Vistoaquilla": "Vistoaquillan Dollar (V$D)"
 };
+
+/**************** LANGUAGE LOGIC *****************/
+let currentLang = 'EN';
+const translations = {
+    EN: {
+        title: "THE PHILIPPINE MICRONATIONAL CURRENCY CONVERTER",
+        sub: "Official Exchange Terminal created by the People's Republic of Aesthrella",
+        placeholder: "INPUT_AMOUNT",
+        swap: "SWAP_DIR",
+        rates: "EXCHANGE_MATRIX",
+        index: "NATION_INDEX",
+        about: "ABOUT_SYSTEM",
+        close: "TERMINATE_SESSION",
+        footer: "PEOPLE'S REPUBLIC OF AESTHRELLA // VER. 0.0.3",
+        aboutText: "This terminal serves as the centralized financial hub for calculating exchange values between various Philippine micronations. It was engineered by the People's Republic of Aesthrella to promote economic transparency within the inter-micronational community. The system utilizes real-time mathematical ratios to bridge the gap between sovereign micronational currencies and global standards like PHP and USD. Users can navigate through the nation index to identify the specific origins of each currency denomination listed. Every calculation performed here is logged to ensure the stability of our shared digital economy. We remain committed to providing a secure and accessible platform for all recognized micronational entities."
+    },
+    PH: {
+        title: "TAGAPAGSALIN NG SALAPING MIKRONASYONAL NG PILIPINAS",
+        sub: "Opisyal na Terminal ng Palitan na gawa ng Sangkatauhang Republika ng Estrelya",
+        placeholder: "ILAGAY_ANG_HALAGA",
+        swap: "PAGPALITIN",
+        rates: "MATRIKS_NG_PALITAN",
+        index: "TALAAN_NG_BANSA",
+        about: "TUNGKOL_SA_SISTEMA",
+        close: "ITIGIL_ANG_SESYON",
+        footer: "SANGKATAUHANG REPUBLIKA NG ESTRELYA // BER. 0.0.3",
+        aboutText: "Ang terminal na ito ay nagsisilbing sentrong pampinansyal para sa pagkwenta ng halaga ng palitan sa pagitan ng iba't ibang mikronasyon sa Pilipinas. Ito ay binuo ng Sangkatauhang Republika ng Estrelya upang itaguyod ang malinaw na ekonomiya sa komunidad ng mga mikronasyon. Ginagamit ng sistemang ito ang mga matematikong ratio upang pag-ugnayin ang mga salaping mikronasyonal sa mga pandaigdigang pamantayan tulad ng PHP at USD. Maaaring suriin ng mga gumagamit ang talaan ng mga bansa upang malaman ang pinagmulan ng bawat yunit ng salapi. Ang bawat kalkulasyon ay itinatala upang matiyak ang katatagan ng ating ibinahaging digital na ekonomiya. Nanatili kaming tapat sa pagbibigay ng ligtas at madaling gamiting plataporma para sa lahat ng kinikilalang mikronasyon."
+    }
+};
+
+function toggleLanguage() {
+    currentLang = currentLang === 'EN' ? 'PH' : 'EN';
+    const t = translations[currentLang];
+    
+    document.getElementById('main-title').innerText = t.title;
+    document.getElementById('sub-header').innerText = t.sub;
+    document.getElementById('amount').placeholder = t.placeholder;
+    document.getElementById('btn-swap').innerText = t.swap;
+    document.getElementById('btn-rates').innerText = t.rates;
+    document.getElementById('btn-index').innerText = t.index;
+    document.getElementById('btn-about').innerText = t.about;
+    document.getElementById('btn-close').innerText = t.close;
+    document.getElementById('footer-text').innerText = t.footer;
+}
 
 function convertNow() {
     let a = parseFloat(document.getElementById('amount').value) || 0;
@@ -205,24 +253,30 @@ function openTable(mode) {
     let modal = document.getElementById('infoModal');
     let title = document.getElementById('modalTitle');
     let content = document.getElementById('modalContent');
-    let html = "<table>";
+    let html = "";
 
     if (mode === 'rates') {
-        title.innerText = "EXCHANGE_MATRIX.LOG";
+        title.innerText = currentLang === 'EN' ? "EXCHANGE_MATRIX.LOG" : "MATRIKS_NG_PALITAN.LOG";
+        html = "<table>";
         Object.keys(FX).forEach(f => {
             Object.keys(FX[f]).forEach(t => {
                 html += `<tr><td>1 ${f} = ${FX[f][t].toFixed(3)} ${t}</td></tr>`;
             });
             html += `<tr><td style="border:none; height:10px;"></td></tr>`;
         });
-    } else {
-        title.innerText = "NATION_INDEX.DAT";
+        html += "</table>";
+    } else if (mode === 'micro') {
+        title.innerText = currentLang === 'EN' ? "NATION_INDEX.DAT" : "TALAAN_NG_BANSA.DAT";
+        html = "<table>";
         for (let nation in microData) {
             html += `<tr><td><strong>${nation}</strong></td><td>${microData[nation]}</td></tr>`;
         }
+        html += "</table>";
+    } else if (mode === 'about') {
+        title.innerText = currentLang === 'EN' ? "SYSTEM_OVERVIEW.DOC" : "REBYU_NG_SISTEMA.DOC";
+        html = `<div class="about-text">${translations[currentLang].aboutText}</div>`;
     }
 
-    html += "</table>";
     content.innerHTML = html;
     modal.classList.add("show");
 }
