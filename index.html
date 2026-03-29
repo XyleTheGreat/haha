@@ -141,7 +141,7 @@
 
     <input type="number" id="amount" placeholder="INPUT_AMOUNT" oninput="convertNow()">
 
-    <div id="result">0.000</div>
+    <div id="result">0.00</div>
 
     <div class="btn-group">
         <button id="btn-swap" onclick="swapCurrencies()">SWAP_DIR</button>
@@ -163,15 +163,15 @@
 <script>
 /**************** RATE MAP *****************/
 const FX = {
-    AET: {AKR: 2.000, PHP: 0.250, DHC: 0.500, USD: 0.004, ESH: 1.725, EDG: 0.357, TCD: 1.700, "V$D": 0.017},
-    AKR: {AET: 2.500, PHP: 5.000, DHC: 1.500, USD: 0.083, ESH: 12.000, EDG: 8.000, TCD: 4.600, "V$D": 7.600},
-    DHC: {AKR: 1.226, PHP: 0.590, AET: 0.613, USD: 0.009, ESH: 1.630, EDG: 0.714, TCD: 32.000, "V$D": 0.034},
-    PHP: {AKR: 8.000, AET: 4.000, DHC: 2.000, USD: 0.017, ESH: 1.492, EDG: 1.428, TCD: 0.012, "V$D": 0.017},
-    USD: {AKR: 29.000, PHP: 59.000, AET: 14.500, DHC: 29.000, ESH: 33.335, EDG: 83.333, TCD: 3.448, "V$D": 5.556},
-    ESH: {AKR: 1.158, PHP: 0.670, AET: 0.579, DHC: 0.580, USD: 0.012, EDG: 0.958, TCD: 53.629, "V$D": 0.010},
-    EDG: {AKR: 5.600, PHP: 0.700, AET: 2.800, DHC: 1.400, USD: 0.012, ESH: 1.044, TCD: 0.875, "V$D": 0.012},
-    TCD: {AKR: 640.00, PHP: 80.000, AET: 320.000, DHC: 160.000, USD: 1.379, ESH: 53.629, EDG: 1.143, "V$D": 1.379},
-    "V$D": {AKR: 13.608, PHP: 58.900, USD: 0.180, AET: 6.804, DHC: 3.402, ESH: 2.432, EDG: 1.530, TCD: 0.725}
+    AET: {AKR: 2.00, PHP: 0.25, DHC: 0.50, USD: 0.004, ESH: 1.72, EDG: 2.35, TCD: 2.00, "V$D": 0.17},
+    AKR: {AET: 2.50, PHP: 5.00, DHC: 1.50, USD: 0.083, ESH: 12.00, EDG: 8.00, TCD: 4.60, "V$D": 7.60},
+    DHC: {AKR: 1.226, PHP: 0.59, AET: 0.61, USD: 0.009, ESH: 1.63, EDG: 0.714, TCD: 32.00, "V$D": 0.034},
+    PHP: {AKR: 8.00, AET: 4.00, DHC: 2.00, USD: 0.017, ESH: 1.492, EDG: 1.428, TCD: 0.012, "V$D": 0.017},
+    USD: {AKR: 29.00, PHP: 60.55, AET: 14.50, DHC: 29.00, ESH: 33.335, EDG: 83.333, TCD: 3.448, "V$D": 5.556},
+    ESH: {AKR: 1.158, PHP: 0.67, AET: 0.579, DHC: 0.58, USD: 0.012, EDG: 0.958, TCD: 53.629, "V$D": 0.010},
+    EDG: {AKR: 5.60, PHP: 0.70, AET: 2.80, DHC: 1.40, USD: 0.012, ESH: 1.044, TCD: 0.875, "V$D": 0.012},
+    TCD: {AKR: 640.00, PHP: 80.00, AET: 320.00, DHC: 160.00, USD: 1.379, ESH: 53.629, EDG: 1.143, "V$D": 1.379},
+    "V$D": {AKR: 13.608, PHP: 58.90, USD: 0.18, AET: 6.804, DHC: 3.402, ESH: 2.432, EDG: 1.53, TCD: 0.725}
 };
 
 const microData = {
